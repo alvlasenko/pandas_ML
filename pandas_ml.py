@@ -7,6 +7,7 @@ from sklearn.neighbors import KNeighborsRegressor
 import mglearn
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
+import scipy
 
 data_ddf = pd.read_csv('data_DDF.csv', delimiter=';')
 data_ddf = data_ddf.iloc[:, np.r_[33, 40:49, 59:64]]
@@ -145,3 +146,23 @@ for name, score in zip(featur_names, model_tree.feature_importances_):
 
 tree.plot_tree(model_tree)
 plt.show()
+
+a = data_ddf['LALSct']
+print(a.name)
+stat, p = scipy.stats.shapiro(a)
+print('тест Шапиро-Уилк')
+print('Statistics=%.3f, p-value=%.3f' % (stat, p))
+alpha = 0.05
+if p > alpha:
+    print('Принять гипотезу о нормальности')
+else:
+    print('Отклонить гипотезу о нормальности')
+
+stat, p = scipy.stats.normaltest(a)
+print('Критерий согласия Пирсона')
+print('Statistics=%.3f, p-value=%.3f' % (stat, p))
+alpha = 0.05
+if p > alpha:
+    print('Принять гипотезу о нормальности')
+else:
+    print('Отклонить гипотезу о нормальности')
